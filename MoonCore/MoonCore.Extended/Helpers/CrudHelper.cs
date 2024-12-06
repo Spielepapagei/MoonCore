@@ -2,6 +2,7 @@
 using MoonCore.Exceptions;
 using MoonCore.Extended.Abstractions;
 using MoonCore.Extended.Configuration;
+using MoonCore.Extensions;
 using MoonCore.Helpers;
 using MoonCore.Models;
 
@@ -11,6 +12,9 @@ public class CrudHelper<T, TResult> where T : class
 {
     private readonly DatabaseRepository<T> Repository;
     private readonly IServiceProvider ServiceProvider;
+
+    public Func<IQueryable<T>, IQueryable<T>>? QueryModifier { get; set; }
+    public Func<T, TResult, TResult>? LateMapper { get; set; }
 
     public CrudHelper(DatabaseRepository<T> repository, IServiceProvider serviceProvider)
     {
@@ -26,15 +30,19 @@ public class CrudHelper<T, TResult> where T : class
             throw new HttpApiException("The requested page size is too large", 400);
 
         var totalItems = Repository.Get().Count();
-        
-        var items = Repository
-            .Get()
-            .Skip(page * pageSize)
-            .Take(pageSize)
-            .ToArray();
 
-        var castedItems = items
-            .Select(x => Mapper.Map<TResult>(x))
+        var items = Repository
+            .Get() as IQueryable<T>;
+
+        if (QueryModifier != null)
+            items = QueryModifier.Invoke(items);
+
+        var loadedItems = items
+            .Skip(page * pageSize)
+            .Take(pageSize).ToArray();
+
+        var castedItems = loadedItems
+            .Select(MapToResult)
             .ToArray();
 
         return Task.FromResult<IPagedData<TResult>>(new PagedData<TResult>()
@@ -47,25 +55,26 @@ public class CrudHelper<T, TResult> where T : class
         });
     }
 
-    public Task<TResult> GetSingle(int id)
+    public async Task<TResult> GetSingle(int id)
     {
-        var item = Repository
-            .Get()
-            .Find(id);
+        var item = await GetSingleModel(id);
 
-        if (item == null)
-            throw new HttpApiException("No item with this id found", 404);
-
-        var castedItem = Mapper.Map<TResult>(item);
+        var castedItem = MapToResult(item);
         
-        return Task.FromResult(castedItem);
+        return castedItem;
     }
     
     public Task<T> GetSingleModel(int id)
     {
-        var item = Repository
-            .Get()
-            .Find(id);
+        var query = Repository
+            .Get();
+
+        T? item;
+
+        if (QueryModifier == null)
+            item = query.FirstOrDefaultById(id);
+        else
+            item = QueryModifier.Invoke(query).FirstOrDefaultById(id);
 
         if (item == null)
             throw new HttpApiException("No item with this id found", 404);
@@ -79,7 +88,7 @@ public class CrudHelper<T, TResult> where T : class
 
         var finalItem = Repository.Add(item);
 
-        var castedItem = Mapper.Map<TResult>(finalItem);
+        var castedItem = MapToResult(finalItem);
 
         return Task.FromResult(castedItem);
     }
@@ -97,7 +106,7 @@ public class CrudHelper<T, TResult> where T : class
         
         Repository.Update(item);
 
-        var castedItem = Mapper.Map<TResult>(item);
+        var castedItem = MapToResult(item);
 
         return Task.FromResult(castedItem);
     }
@@ -107,6 +116,16 @@ public class CrudHelper<T, TResult> where T : class
         var item = await GetSingleModel(id);
         
         Repository.Delete(item);
+    }
+
+    public TResult MapToResult(T item)
+    {
+        var mapped = Mapper.Map<TResult>(item);
+
+        if (LateMapper != null)
+            mapped = LateMapper.Invoke(item, mapped);
+
+        return mapped;
     }
 
     private CrudHelperConfiguration GetConfig() =>

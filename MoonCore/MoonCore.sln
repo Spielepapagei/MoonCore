@@ -1,4 +1,3 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoonCore", "MoonCore\MoonCore.csproj", "{9CFC971A-793C-4175-93B9-D7B61432D509}"
 EndProject
@@ -15,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoonCore.Blazor.Tailwind", "MoonCore.Blazor.Tailwind\MoonCore.Blazor.Tailwind.csproj", "{F11E0089-C572-4B46-AB6C-87BB8157E3B8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoonCore.PluginFramework", "MoonCore.PluginFramework\MoonCore.PluginFramework.csproj", "{B945469E-4FF0-447D-89DB-3B9290FBC396}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoonCore.Blazor.Tailwind.Test", "MoonCore.Blazor.Tailwind.Test\MoonCore.Blazor.Tailwind.Test.csproj", "{3E0731A8-CFEA-47BF-AED1-FE04FE18DBB4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoonCore.DiscordNet", "MoonCore.DiscordNet\MoonCore.DiscordNet.csproj", "{F9D601D6-A299-415F-A04A-7B24FFE753AC}"
 EndProject
@@ -56,6 +57,10 @@ Global
 		{B945469E-4FF0-447D-89DB-3B9290FBC396}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B945469E-4FF0-447D-89DB-3B9290FBC396}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B945469E-4FF0-447D-89DB-3B9290FBC396}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E0731A8-CFEA-47BF-AED1-FE04FE18DBB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E0731A8-CFEA-47BF-AED1-FE04FE18DBB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E0731A8-CFEA-47BF-AED1-FE04FE18DBB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E0731A8-CFEA-47BF-AED1-FE04FE18DBB4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F9D601D6-A299-415F-A04A-7B24FFE753AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F9D601D6-A299-415F-A04A-7B24FFE753AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9D601D6-A299-415F-A04A-7B24FFE753AC}.Release|Any CPU.ActiveCfg = Release|Any CPU

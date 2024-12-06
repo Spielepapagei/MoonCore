@@ -1,0 +1,16 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+
+@import "additions/fonts.css";
+@import "additions/buttons.css";
+@import "additions/cards.css";
+@import "additions/forms.css";
+@import "additions/progress.css";
+@import "additions/scrollbar.css";
+@import "additions/loaders.css";
+
+@import "tailwindcss/utilities";
+
+#blazor-error-ui {
+    display: none;
+}

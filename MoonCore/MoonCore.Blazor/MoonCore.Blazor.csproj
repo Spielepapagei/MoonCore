@@ -14,9 +14,13 @@
         <RepositoryType>git</RepositoryType>
         <PackageTags>moonlight</PackageTags>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>1.2.5</Version>
+        <Version>1.2.8</Version>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
 
     <ItemGroup>
         <SupportedPlatform Include="browser"/>
@@ -28,5 +32,6 @@
 
     <ItemGroup>
       <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
+      <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.10" />
     </ItemGroup>
 </Project>
