@@ -9,6 +9,7 @@ public class DiscordBotConfiguration
     public SettingsData Settings { get; set; } = new();
     public AuthData Auth { get; set; } = new();
     public List<Assembly> ModuleAssemblies { get; set; } = new();
+    public List<Assembly> CommandAssemblies { get; set; } = new();
     
     public class SettingsData
     {

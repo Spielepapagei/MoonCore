@@ -11,9 +11,4 @@ public interface IBaseBotModule
     /// This is an async implementation to Unload EventHandlers
     /// </summary>
     public Task UnregisterAsync();
-    
-    /// <summary>
-    /// This is an async implementation to Registering for Example SlashCommands
-    /// </summary>
-    public Task RegisterAsync();
 }

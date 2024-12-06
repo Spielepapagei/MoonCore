@@ -1,11 +1,10 @@
-﻿using System.Reflection;
-using Discord;
+﻿using Discord;
 using Microsoft.Extensions.Logging;
 using Discord.WebSocket;
 using MoonCore.DiscordNet.configuration;
 using MoonCore.DiscordNet.Extensions;
 using MoonCore.DiscordNet.Module;
-using MoonCore.PluginFramework.Services;
+
 
 namespace MoonCore.DiscordNet.Services;
 
@@ -14,17 +13,20 @@ public class DiscordBotService
     private readonly ILogger<DiscordBotService> Logger;
     private readonly DiscordSocketClient Client;
     private readonly IBaseBotModule[] Modules;
+    private readonly IRegisterSlashCommands[] Commands;
     private readonly DiscordBotConfiguration Configuration;
 
     public DiscordBotService(
         ILogger<DiscordBotService> logger,
         DiscordBotConfiguration configuration,
         IBaseBotModule[] modules,
+        IRegisterSlashCommands[] commands,
         DiscordSocketClient client)
     {
         Logger = logger;
         Modules = modules;
         Client = client;
+        Commands = commands;
         Configuration = configuration;
     }
 
@@ -37,10 +39,6 @@ public class DiscordBotService
         {
             foreach (var module in Modules)
                 await module.InitializeAsync();
-        }
-        catch (NotImplementedException)
-        {
-            Logger.LogDebug("not implemented yet.");
         }
         catch (Exception e)
         {
@@ -64,7 +62,8 @@ public class DiscordBotService
 
         Logger.LogInformation("Login as {username}#{id}", Client.CurrentUser.Username,
             Client.CurrentUser.DiscriminatorValue);
-
+        
+        /*
         try
         {
             foreach (var module in Modules)
@@ -75,6 +74,7 @@ public class DiscordBotService
         {
             Logger.LogError("An error occurred during Module registration: {RegisterException}", e);
         }
+        */
         
     }
 
@@ -86,6 +86,24 @@ public class DiscordBotService
     public async Task UnregisterAsync(IBaseBotModule module)
     {
         await module.UnregisterAsync();
+    }
+    
+    public async Task RegisterAllCommandsAsync()
+    {
+        try
+        {
+            foreach (var command in Commands)
+                await command.RegisterAsync();
+        }
+        catch (Exception e)
+        {
+            Logger.LogError("An error occurred during Module Command Registration: {RegisterException}", e);
+        }
+    }
+    
+    public async Task UnregisterAsync(IRegisterSlashCommands command)
+    {
+        await command.RegisterAsync();
     }
 
     private Task Log(LogMessage message)

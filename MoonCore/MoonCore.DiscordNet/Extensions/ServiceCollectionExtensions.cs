@@ -34,10 +34,12 @@ public static class ServiceCollectionExtensions
         collection.AddSingleton<DiscordBotService>();
 
         //
-        collection.AddPlugins(interfaceConfiguration =>
+        collection.AddInterfaces(interfaceConfiguration =>
         {
             interfaceConfiguration.AddAssemblies(configuration.ModuleAssemblies);
             interfaceConfiguration.AddInterface<IBaseBotModule>();
+            interfaceConfiguration.AddAssemblies(configuration.CommandAssemblies);
+            interfaceConfiguration.AddInterface<IRegisterSlashCommands>();
         });
     }
 }

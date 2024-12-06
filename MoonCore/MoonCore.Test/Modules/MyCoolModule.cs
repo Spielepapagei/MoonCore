@@ -22,7 +22,7 @@ public class MyCoolModule : IBaseBotModule
         throw new NotImplementedException();
     }
 
-    public Task UnloadAsync()
+    public Task UnregisterAsync()
         => Task.CompletedTask;
 
     public Task RegisterAsync()
